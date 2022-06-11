@@ -46,6 +46,7 @@ impl Contract {
         approval_id: Option<u64>,
         memo: Option<String>,
     ) -> Token {
+        let old_token = self.tokens_by_id.get(token_id).expect("Not found token");
         let token = self.tokens_by_id.get(token_id).expect("Not found token");
         if sender_id != &token.owner_id {
             if !token.approved_account_ids.contains_key(sender_id) {
@@ -105,7 +106,7 @@ impl Contract {
         env::log(&nft_transfer_log.to_string().as_bytes());
 
         // TODO: refactor to avoid reinitiate old token to return
-        let old_token = self.tokens_by_id.get(token_id).expect("Not found token");
+
         old_token
     }
 
